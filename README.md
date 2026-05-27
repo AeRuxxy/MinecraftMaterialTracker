@@ -9,11 +9,8 @@ Aplikasi web sederhana untuk melacak jumlah material build Minecraft. Catat mate
 - Daftar build dengan filter kategori dan pencarian
 - Progress bar per build dan per material
 - Klik material untuk toggle sudah terkumpul / belum
-- Upload foto build, disimpan di browser
+- Upload foto build
 - Tambah build baru lewat form manual
-- Import file .schematic / .nbt / .litematic untuk baca material otomatis
-- Dark mode dan light mode
-- Data tidak hilang saat refresh
 
 ---
 
