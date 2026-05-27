@@ -15,13 +15,11 @@ let activeFilter = 'all';
 // ── LOAD DATA ────────────────────────────────────────────
 async function loadBuilds() {
   try {
-    // cek localStorage dulu
     const savedBuilds = localStorage.getItem('mc_builds');
 
     if (savedBuilds) {
       builds = JSON.parse(savedBuilds);
     } else {
-      // ambil data default dari JSON
       const response = await fetch('data/builds.json');
 
       if (!response.ok) {
@@ -29,21 +27,15 @@ async function loadBuilds() {
       }
 
       builds = await response.json();
-
-      // simpan pertama kali ke localStorage
       localStorage.setItem('mc_builds', JSON.stringify(builds));
     }
 
-    // set active build pertama
     activeId = builds[0]?.id || null;
-
-    // render UI
     renderSidebar();
     renderMain();
 
   } catch (error) {
     console.error('Error loading builds:', error);
-
     document.getElementById('mainContent').innerHTML = `
       <div class="section-title">Error</div>
       <p>Gagal memuat data build.</p>
@@ -61,6 +53,55 @@ function calcProgress(build) {
   const total = build.materials.reduce((s, m) => s + m.dibutuhkan, 0);
   const collected = build.materials.reduce((s, m) => s + Math.min(m.terkumpul, m.dibutuhkan), 0);
   return total === 0 ? 0 : Math.round((collected / total) * 100);
+}
+
+// ── UPLOAD IMAGE ─────────────────────────────────────────
+function handleImageUpload(buildId) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+
+  input.addEventListener('change', () => {
+    const file = input.files[0];
+    if (!file) return;
+
+    // Resize & convert ke base64 via canvas supaya hemat localStorage
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX = 256;
+        const ratio = Math.min(MAX / img.width, MAX / img.height, 1);
+        canvas.width  = Math.round(img.width  * ratio);
+        canvas.height = Math.round(img.height * ratio);
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        const base64 = canvas.toDataURL('image/webp', 0.85);
+        const build = builds.find(b => b.id === buildId);
+        if (build) {
+          build.icon = base64;
+          save();
+          renderSidebar();
+          renderMain();
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  input.click();
+}
+
+function handleImageRemove(buildId) {
+  const build = builds.find(b => b.id === buildId);
+  if (build) {
+    build.icon = null;
+    save();
+    renderSidebar();
+    renderMain();
+  }
 }
 
 // ── SIDEBAR ───────────────────────────────────────────────
@@ -110,7 +151,7 @@ function renderMain() {
   const totalMat = build.materials.length;
   const doneMat = build.materials.filter(m => m.terkumpul >= m.dibutuhkan).length;
 
-  const previewHTML = build.icon
+  const previewInner = build.icon
     ? `<img src="${build.icon}" alt="${build.nama}" />`
     : `<div class="img-placeholder">
          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -120,6 +161,10 @@ function renderMain() {
          </svg>
          <span>No Image</span>
        </div>`;
+
+  const removeBtn = build.icon
+    ? `<button class="btn-remove-img" id="btnRemoveImg" title="Hapus gambar">✕</button>`
+    : '';
 
   const matHTML = build.materials.map((m, i) => {
     const matPct = Math.min(100, Math.round((m.terkumpul / m.dibutuhkan) * 100));
@@ -146,7 +191,11 @@ function renderMain() {
 
   document.getElementById('mainContent').innerHTML = `
     <div class="build-header">
-      <div class="preview-image">${previewHTML}</div>
+      <div class="preview-wrapper">
+        <div class="preview-image">${previewInner}</div>
+        <button class="btn-upload-img" id="btnUploadImg">&#128247; Ganti Gambar</button>
+        ${removeBtn}
+      </div>
       <div class="build-meta">
         <div class="build-title">${build.nama}</div>
         <div class="build-category">${build.kategori}</div>
@@ -188,6 +237,21 @@ function renderMain() {
     </div>
   `;
 
+  // Event: upload image
+  document.getElementById('btnUploadImg').addEventListener('click', () => {
+    handleImageUpload(build.id);
+  });
+
+  // Event: remove image
+  const btnRemove = document.getElementById('btnRemoveImg');
+  if (btnRemove) {
+    btnRemove.addEventListener('click', (e) => {
+      e.stopPropagation();
+      handleImageRemove(build.id);
+    });
+  }
+
+  // Event: material checklist
   document.querySelectorAll('.material-card').forEach(card => {
     card.addEventListener('click', () => {
       const bId = +card.dataset.build;
@@ -201,6 +265,38 @@ function renderMain() {
     });
   });
 }
+
+// ── MODAL: PILIH METODE TAMBAH BUILD ─────────────────────
+const modalChoose    = document.getElementById('modalChoose');
+const btnAddBuild    = document.getElementById('btnAddBuild');
+
+function openChooseModal() {
+  modalChoose.classList.remove('hidden');
+}
+
+function closeChooseModal() {
+  modalChoose.classList.add('hidden');
+}
+
+btnAddBuild.addEventListener('click', openChooseModal);
+document.getElementById('modalChooseClose').addEventListener('click', closeChooseModal);
+
+// Klik overlay untuk tutup
+modalChoose.addEventListener('click', e => {
+  if (e.target === modalChoose) closeChooseModal();
+});
+
+// Pilih: Input Manual
+document.getElementById('chooseManual').addEventListener('click', () => {
+  closeChooseModal();
+  ManualAdd.open();
+});
+
+// Pilih: Import Schematic
+document.getElementById('chooseSchematic').addEventListener('click', () => {
+  closeChooseModal();
+  SchematicImport.open();
+});
 
 // ── FILTER TABS ───────────────────────────────────────────
 document.querySelectorAll('.filter-tab').forEach(btn => {
