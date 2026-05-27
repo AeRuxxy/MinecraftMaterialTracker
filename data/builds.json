@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "nama": "Medieval Castle",
+    "kategori": "Megabuild",
+    "icon": null,
+    "deskripsi": "Kastil megah gaya medieval.",
+    "materials": [
+      {
+        "nama": "Stone Brick",
+        "dibutuhkan": 5000,
+        "terkumpul": 3200,
+        "icon": null
+      }
+    ]
+  }
+]
