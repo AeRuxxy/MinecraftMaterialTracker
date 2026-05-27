@@ -1,92 +1,69 @@
-// Helper: render img tag atau placeholder
+// ── HELPERS ──────────────────────────────────────────────
 function imgOrPlaceholder(src, alt, cls) {
   if (src) {
     return `<img src="${src}" alt="${alt}" />`;
   }
-  // Ambil 2 huruf pertama dari nama sebagai placeholder
   const initials = alt.substring(0, 2).toUpperCase();
   return `<div class="${cls}-placeholder">${initials}</div>`;
 }
 
-// ── DATA ──────────────────────────────────────────────
-// icon & mat.icon diisi path ke assets, contoh: "assets/builds/castle.png"
-// Kalau kosong/null, otomatis tampil placeholder teks
-const defaultBuilds = [
-  {
-    id: 1,
-    nama: "Medieval Castle",
-    kategori: "Megabuild",
-    icon: null,           // ganti dengan: "assets/builds/castle.png"
-    deskripsi: "Kastil megah gaya medieval dengan menara tinggi, jembatan gantung, dan ruang bawah tanah.",
-    materials: [
-      { nama: "Stone Brick",  dibutuhkan: 5000, terkumpul: 3200, icon: null },
-      { nama: "Oak Log",      dibutuhkan: 800,  terkumpul: 800,  icon: null },
-      { nama: "Glass Pane",   dibutuhkan: 400,  terkumpul: 150,  icon: null },
-      { nama: "Lantern",      dibutuhkan: 120,  terkumpul: 80,   icon: null },
-      { nama: "Iron Bar",     dibutuhkan: 300,  terkumpul: 50,   icon: null },
-      { nama: "Cobblestone",  dibutuhkan: 2000, terkumpul: 2000, icon: null },
-    ]
-  },
-  {
-    id: 2,
-    nama: "Auto Wheat Farm",
-    kategori: "Farm",
-    icon: null,
-    deskripsi: "Farm gandum fully automatic menggunakan observer, piston, dan water flush system.",
-    materials: [
-      { nama: "Dirt",         dibutuhkan: 200, terkumpul: 200, icon: null },
-      { nama: "Observer",     dibutuhkan: 64,  terkumpul: 30,  icon: null },
-      { nama: "Piston",       dibutuhkan: 64,  terkumpul: 64,  icon: null },
-      { nama: "Wheat Seed",   dibutuhkan: 200, terkumpul: 100, icon: null },
-      { nama: "Hopper",       dibutuhkan: 32,  terkumpul: 10,  icon: null },
-    ]
-  },
-  {
-    id: 3,
-    nama: "Item Sorting System",
-    kategori: "Storage",
-    icon: null,
-    deskripsi: "Sistem sorting otomatis dengan chest besar, hopper chain, dan comparator untuk 30+ kategori item.",
-    materials: [
-      { nama: "Chest",        dibutuhkan: 120, terkumpul: 120, icon: null },
-      { nama: "Hopper",       dibutuhkan: 240, terkumpul: 180, icon: null },
-      { nama: "Comparator",   dibutuhkan: 80,  terkumpul: 40,  icon: null },
-      { nama: "Redstone",     dibutuhkan: 500, terkumpul: 500, icon: null },
-      { nama: "Smooth Stone", dibutuhkan: 300, terkumpul: 300, icon: null },
-    ]
-  },
-  {
-    id: 4,
-    nama: "Japanese Garden",
-    kategori: "Dekorasi",
-    icon: null,
-    deskripsi: "Taman gaya Jepang dengan jembatan kayu, batu stepping, lantern, dan kolam koi.",
-    materials: [
-      { nama: "Cherry Log",   dibutuhkan: 200, terkumpul: 50,  icon: null },
-      { nama: "Bamboo",       dibutuhkan: 300, terkumpul: 300, icon: null },
-      { nama: "Stone Slab",   dibutuhkan: 150, terkumpul: 80,  icon: null },
-      { nama: "Lily Pad",     dibutuhkan: 40,  terkumpul: 10,  icon: null },
-      { nama: "Lantern",      dibutuhkan: 30,  terkumpul: 5,   icon: null },
-    ]
-  },
-];
-
-// ── STATE ─────────────────────────────────────────────
-let builds = JSON.parse(localStorage.getItem('mc_builds') || 'null') || defaultBuilds;
-let activeId = builds[0].id;
+// ── STATE ────────────────────────────────────────────────
+let builds = [];
+let activeId = null;
 let activeFilter = 'all';
 
+// ── LOAD DATA ────────────────────────────────────────────
+async function loadBuilds() {
+  try {
+    // cek localStorage dulu
+    const savedBuilds = localStorage.getItem('mc_builds');
+
+    if (savedBuilds) {
+      builds = JSON.parse(savedBuilds);
+    } else {
+      // ambil data default dari JSON
+      const response = await fetch('data/builds.json');
+
+      if (!response.ok) {
+        throw new Error('Gagal load builds.json');
+      }
+
+      builds = await response.json();
+
+      // simpan pertama kali ke localStorage
+      localStorage.setItem('mc_builds', JSON.stringify(builds));
+    }
+
+    // set active build pertama
+    activeId = builds[0]?.id || null;
+
+    // render UI
+    renderSidebar();
+    renderMain();
+
+  } catch (error) {
+    console.error('Error loading builds:', error);
+
+    document.getElementById('mainContent').innerHTML = `
+      <div class="section-title">Error</div>
+      <p>Gagal memuat data build.</p>
+    `;
+  }
+}
+
+// ── SAVE ─────────────────────────────────────────────────
 function save() {
   localStorage.setItem('mc_builds', JSON.stringify(builds));
 }
 
+// ── PROGRESS ─────────────────────────────────────────────
 function calcProgress(build) {
   const total = build.materials.reduce((s, m) => s + m.dibutuhkan, 0);
   const collected = build.materials.reduce((s, m) => s + Math.min(m.terkumpul, m.dibutuhkan), 0);
   return total === 0 ? 0 : Math.round((collected / total) * 100);
 }
 
-// ── SIDEBAR ───────────────────────────────────────────
+// ── SIDEBAR ───────────────────────────────────────────────
 function renderSidebar() {
   const list = document.getElementById('buildList');
   const query = document.getElementById('searchInput').value.toLowerCase();
@@ -124,7 +101,7 @@ function renderSidebar() {
   });
 }
 
-// ── MAIN CONTENT ──────────────────────────────────────
+// ── MAIN CONTENT ──────────────────────────────────────────
 function renderMain() {
   const build = builds.find(b => b.id === activeId);
   if (!build) return;
@@ -225,7 +202,7 @@ function renderMain() {
   });
 }
 
-// ── FILTER TABS ───────────────────────────────────────
+// ── FILTER TABS ───────────────────────────────────────────
 document.querySelectorAll('.filter-tab').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
@@ -235,10 +212,10 @@ document.querySelectorAll('.filter-tab').forEach(btn => {
   });
 });
 
-// ── SEARCH ────────────────────────────────────────────
+// ── SEARCH ────────────────────────────────────────────────
 document.getElementById('searchInput').addEventListener('input', renderSidebar);
 
-// ── THEME TOGGLE ─────────────────────────────────────
+// ── THEME TOGGLE ──────────────────────────────────────────
 const themeToggle = document.getElementById('themeToggle');
 const savedTheme = localStorage.getItem('mc_theme') || 'dark';
 document.documentElement.setAttribute('data-theme', savedTheme);
@@ -252,6 +229,5 @@ themeToggle.addEventListener('click', () => {
   localStorage.setItem('mc_theme', next);
 });
 
-// ── INIT ──────────────────────────────────────────────
-renderSidebar();
-renderMain();
+// ── INIT ──────────────────────────────────────────────────
+loadBuilds();
