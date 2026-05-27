@@ -18,9 +18,7 @@ const SchematicImport = (() => {
       <div class="wip-banner">
         <div class="wip-title">Fitur Dalam Pengembangan</div>
         <div class="wip-desc">
-          Import Schematic sedang dalam proses pengerjaan.<br>
-          Parser NBT masih mengalami error pada beberapa format file
-          (.schematic terkompresi, .litematic, dll).
+          Import Schematic sedang dalam proses pengerjaan.
         </div>
         <div class="wip-note">
           Sementara gunakan <strong>Input Manual</strong> untuk menambah build.
