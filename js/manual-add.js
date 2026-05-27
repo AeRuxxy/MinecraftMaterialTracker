@@ -173,18 +173,13 @@ const ManualAdd = (() => {
     btnCancel().onclick = close;
     btnClose().onclick  = close;
 
-    // Tutup saat klik overlay
-    modal().addEventListener('click', onOverlayClick);
+    // Klik di luar modal TIDAK menutup — cegah kehilangan input tidak sengaja.
+    // Tutup hanya lewat tombol X atau Batal.
   }
 
   // ── Tutup modal ────────────────────────────────────────
   function close() {
     modal().classList.add('hidden');
-    modal().removeEventListener('click', onOverlayClick);
-  }
-
-  function onOverlayClick(e) {
-    if (e.target === modal()) close();
   }
 
   // ── Public API ────────────────────────────────────────
