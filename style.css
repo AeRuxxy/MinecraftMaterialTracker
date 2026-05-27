@@ -718,3 +718,118 @@ footer span { color: var(--accent); }
   color: var(--muted);
   padding: 0 .55rem;
 }
+
+/* ══════════════════════════
+   BUILD TITLE ROW (edit btn)
+══════════════════════════ */
+.build-title-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-bottom: .4rem;
+}
+.build-title-row .build-title { margin-bottom: 0; }
+
+.btn-edit-build {
+  background: transparent;
+  border: var(--pixel) solid var(--border);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: .25rem .65rem;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-edit-build:hover { border-color: var(--accent2); color: var(--accent2); }
+
+/* ══════════════════════════
+   DANGER BUTTON
+══════════════════════════ */
+.btn-danger {
+  background: transparent;
+  border: var(--pixel) solid var(--danger);
+  color: var(--danger);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: .5rem 1rem;
+  cursor: pointer;
+}
+.btn-danger:hover { background: var(--danger); color: #fff; }
+
+/* ══════════════════════════
+   WIP / ON PROGRESS BANNER
+══════════════════════════ */
+.wip-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .9rem;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+.wip-icon { font-size: 2.5rem; line-height: 1; }
+.wip-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent2);
+}
+.wip-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.wip-progress-wrap { width: 100%; max-width: 320px; }
+.wip-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-bottom: .35rem;
+}
+.wip-pct { color: var(--accent2); font-weight: 700; }
+.wip-track {
+  height: 10px;
+  background: var(--bg);
+  border: var(--pixel) solid var(--border);
+}
+.wip-fill {
+  height: 100%;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--accent2),
+    var(--accent2) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  background-color: var(--accent2);
+  opacity: .7;
+}
+.wip-checklist {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  text-align: left;
+}
+.wip-check {
+  font-size: 0.75rem;
+  padding: .3rem .5rem;
+  border-left: 3px solid var(--border);
+}
+.wip-check.done   { color: var(--accent); border-left-color: var(--accent); }
+.wip-check.pending { color: var(--muted); border-left-color: var(--border); }
+.wip-note {
+  font-size: 0.72rem;
+  color: var(--muted);
+  background: var(--bg);
+  border: var(--pixel) solid var(--border);
+  padding: .55rem .9rem;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+}
+.wip-note strong { color: var(--accent); }
