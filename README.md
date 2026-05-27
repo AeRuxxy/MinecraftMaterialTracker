@@ -33,7 +33,7 @@ Klik tombol tambah baris untuk menambah material baru.
 
 ### Import Schematic
 
-Fungsi upload schematic masih dalam pengerjaan.
+Fungsi upload schematic masih dalam pengembangan.
 
 ---
 
