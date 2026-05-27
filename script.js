@@ -197,7 +197,10 @@ function renderMain() {
         ${removeBtn}
       </div>
       <div class="build-meta">
-        <div class="build-title">${build.nama}</div>
+        <div class="build-title-row">
+          <div class="build-title">${build.nama}</div>
+          <button class="btn-edit-build" id="btnEditBuild" title="Edit Build">&#9998; Edit</button>
+        </div>
         <div class="build-category">${build.kategori}</div>
         <div class="build-desc">${build.deskripsi}</div>
         <div class="progress-container">
@@ -236,6 +239,11 @@ function renderMain() {
       <div class="material-list">${matHTML}</div>
     </div>
   `;
+
+  // Event: edit build
+  document.getElementById('btnEditBuild').addEventListener('click', () => {
+    EditBuild.open(build.id);
+  });
 
   // Event: upload image
   document.getElementById('btnUploadImg').addEventListener('click', () => {
