@@ -230,10 +230,16 @@ main.content {
   align-items: flex-start;
 }
 
+.preview-wrapper {
+  position: relative;
+  flex-shrink: 0;
+  width: 180px;
+  height: 140px;
+}
+
 .preview-image {
   width: 180px;
   height: 140px;
-  flex-shrink: 0;
   border: var(--pixel) solid var(--border);
   background: var(--surface);
   display: flex;
@@ -258,6 +264,41 @@ main.content {
   width: 40px; height: 40px;
   opacity: .4;
 }
+
+.btn-upload-img {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(0,0,0,.65);
+  color: var(--accent);
+  border: none;
+  font-family: inherit;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: .3rem 0;
+  cursor: pointer;
+  text-align: center;
+  letter-spacing: .04em;
+  opacity: 0;
+  transition: opacity .15s;
+}
+.preview-wrapper:hover .btn-upload-img { opacity: 1; }
+
+.btn-remove-img {
+  position: absolute;
+  top: 4px; right: 4px;
+  background: rgba(0,0,0,.7);
+  color: var(--danger);
+  border: var(--pixel) solid var(--danger);
+  font-family: inherit;
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: .15rem .35rem;
+  cursor: pointer;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity .15s;
+}
+.preview-wrapper:hover .btn-remove-img { opacity: 1; }
 
 .build-meta { flex: 1; }
 .build-title {
@@ -443,3 +484,237 @@ footer span { color: var(--accent); }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ══════════════════════════
+   MODAL OVERLAY
+══════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  backdrop-filter: blur(2px);
+}
+.modal-overlay.hidden { display: none; }
+
+.modal-box {
+  background: var(--surface);
+  border: var(--pixel) solid var(--border);
+  width: 100%;
+  max-width: 480px;
+  max-height: 85vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .85rem 1.25rem;
+  border-bottom: var(--pixel) solid var(--border);
+  flex-shrink: 0;
+}
+.modal-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .03em;
+}
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 .2rem;
+}
+.modal-close:hover { color: var(--danger); }
+
+.modal-body { padding: 1.25rem; flex: 1; }
+.modal-footer {
+  padding: .85rem 1.25rem;
+  border-top: var(--pixel) solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: .6rem;
+  flex-shrink: 0;
+}
+
+/* ── Add Method chooser ── */
+.method-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+}
+.method-card {
+  background: var(--bg);
+  border: var(--pixel) solid var(--border);
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .65rem;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color .15s;
+}
+.method-card:hover { border-color: var(--accent); }
+.method-card .mc-icon { font-size: 2rem; line-height: 1; }
+.method-card .mc-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.method-card .mc-desc {
+  font-size: 0.68rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ── Form inputs ── */
+.form-group { margin-bottom: .9rem; }
+.form-group:last-child { margin-bottom: 0; }
+.form-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+  margin-bottom: .35rem;
+}
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  background: var(--bg);
+  border: var(--pixel) solid var(--border);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.82rem;
+  padding: .5rem .75rem;
+  outline: none;
+}
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus { border-color: var(--accent); }
+.form-input::placeholder,
+.form-textarea::placeholder { color: var(--muted); }
+.form-textarea { resize: vertical; min-height: 70px; }
+.form-select { appearance: none; cursor: pointer; }
+
+/* ── Material rows inside manual form ── */
+.mat-rows { display: flex; flex-direction: column; gap: .4rem; margin-bottom: .6rem; }
+.mat-row {
+  display: grid;
+  grid-template-columns: 1fr 90px 90px 28px;
+  gap: .4rem;
+  align-items: center;
+}
+.mat-row .form-input { padding: .4rem .55rem; font-size: 0.78rem; }
+.btn-mat-remove {
+  background: none;
+  border: var(--pixel) solid var(--border);
+  color: var(--danger);
+  cursor: pointer;
+  font-size: .8rem;
+  height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.btn-mat-remove:hover { border-color: var(--danger); background: var(--danger); color: #fff; }
+
+.btn-add-mat {
+  background: none;
+  border: var(--pixel) dashed var(--border);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.75rem;
+  padding: .4rem .75rem;
+  cursor: pointer;
+  width: 100%;
+}
+.btn-add-mat:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Buttons ── */
+.btn-primary {
+  background: var(--accent);
+  border: var(--pixel) solid var(--accent);
+  color: var(--bg);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: .5rem 1.1rem;
+  cursor: pointer;
+}
+.btn-primary:hover { opacity: .85; }
+
+.btn-secondary {
+  background: transparent;
+  border: var(--pixel) solid var(--border);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.8rem;
+  padding: .5rem 1rem;
+  cursor: pointer;
+}
+.btn-secondary:hover { border-color: var(--muted); color: var(--text); }
+
+/* ── Schematic drop zone ── */
+.drop-zone {
+  border: var(--pixel) dashed var(--border);
+  background: var(--bg);
+  padding: 2rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: 1rem;
+}
+.drop-zone:hover, .drop-zone.dragover { border-color: var(--accent); }
+.drop-zone .dz-icon { font-size: 2rem; }
+.drop-zone .dz-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.drop-zone .dz-sub {
+  font-size: 0.68rem;
+  color: var(--muted);
+}
+.drop-zone.has-file { border-color: var(--accent); }
+.drop-zone.has-file .dz-label { color: var(--accent); }
+
+.schematic-preview {
+  background: var(--bg);
+  border: var(--pixel) solid var(--border);
+  padding: .65rem .85rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: .75rem;
+  display: none;
+}
+.schematic-preview.visible { display: block; }
+.schematic-preview b { color: var(--accent); }
+
+.mat-col-labels {
+  display: grid;
+  grid-template-columns: 1fr 90px 90px 28px;
+  gap: .4rem;
+  margin-bottom: .25rem;
+}
+.mat-col-labels span {
+  font-size: 0.63rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--muted);
+  padding: 0 .55rem;
+}
