@@ -1,6 +1,6 @@
-# AeRuxxy - Build Tracker
+# AeRuxxy - Material Tracker
 
-Aplikasi web sederhana untuk melacak progress build Minecraft. Catat material apa yang dibutuhkan, berapa yang sudah terkumpul, dan lihat progress setiap proyek dalam satu tampilan.
+Aplikasi web sederhana untuk melacak jumlah material build Minecraft. Catat material apa yang dibutuhkan, berapa yang sudah terkumpul, dan lihat progress setiap proyek dalam satu tampilan.
 
 ---
 
