@@ -103,12 +103,3 @@ Contoh satu build:
 
 Field `icon` bisa diisi path ke file gambar, misalnya `"assets/castle.png"`. Kalau `null`, akan tampil placeholder teks.
 
----
-
-## Teknologi yang Dipakai
-
-- HTML, CSS, JavaScript biasa (tanpa framework)
-- localStorage untuk simpan data
-- FileReader API untuk baca file schematic
-- Canvas API untuk resize gambar
-- NBT parser ditulis sendiri, tidak pakai library eksternal
