@@ -33,21 +33,7 @@ Klik tombol tambah baris untuk menambah material baru.
 
 ### Import Schematic
 
-Upload file dari tool Minecraft yang kamu pakai:
-
-```
-.schematic  -- MCEdit, WorldEdit
-.nbt        -- struktur vanilla
-.litematic  -- Litematica mod
-```
-
-Nama build otomatis diisi dari nama file. Material dibaca langsung di browser, tidak ada file yang dikirim ke internet.
-
-Catatan: kebanyakan file .schematic terkompresi. Supaya bisa terbaca, tambahkan baris ini di `index.html` sebelum tag script lainnya:
-
-```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
-```
+Fungsi upload schematic masih dalam pengerjaan.
 
 ---
 
@@ -76,30 +62,3 @@ mc_theme   -- pilihan tema (dark atau light)
 Data hanya ada di browser yang dipakai. Tidak bisa dibuka di perangkat lain atau browser lain. Kalau browser di-clear, data kembali ke bawaan dari `data/builds.json`.
 
 ---
-
-## Edit Data Bawaan
-
-Buka `data/builds.json` untuk mengubah build yang muncul saat pertama kali aplikasi dibuka.
-
-Contoh satu build:
-
-```json
-{
-  "id": 1,
-  "nama": "Medieval Castle",
-  "kategori": "Megabuild",
-  "icon": null,
-  "deskripsi": "Kastil gaya medieval.",
-  "materials": [
-    {
-      "nama": "Stone Brick",
-      "dibutuhkan": 5000,
-      "terkumpul": 0,
-      "icon": null
-    }
-  ]
-}
-```
-
-Field `icon` bisa diisi path ke file gambar, misalnya `"assets/castle.png"`. Kalau `null`, akan tampil placeholder teks.
-
