@@ -1,7 +1,6 @@
  <style>
     :root {
-     html,
-     html[data-theme="dark"] {
+     [data-theme="dark"] {
       --bg:       #0f1117;
       --surface:  #1a1e2e;
       --border:   #2e3450;
@@ -12,7 +11,7 @@
       --muted:    #6b7399;
       --pixel:    2px;
     }
-    html[data-theme="light"] {
+    [data-theme="light"] {
       --bg:      #f0f2e8;
       --surface: #ffffff;
       --border:  #c8cdb8;
