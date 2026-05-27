@@ -113,10 +113,31 @@
     </div>
   </div>
 
+  <!-- ══ MODAL: EDIT BUILD ══ -->
+  <div class="modal-overlay hidden" id="modalEditBuild">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="modal-title">&#9998; Edit Build</span>
+        <button class="modal-close" id="modalEditBuildClose">&#10005;</button>
+      </div>
+      <div class="modal-body" id="modalEditBuildBody">
+        <!-- diisi oleh edit-build.js -->
+      </div>
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button class="btn-danger" id="modalEditBuildDelete">&#128465; Hapus Build</button>
+        <div style="display:flex;gap:.6rem;">
+          <button class="btn-secondary" id="modalEditBuildCancel">Batal</button>
+          <button class="btn-primary" id="modalEditBuildSave">&#10003; Simpan Perubahan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ══ SCRIPTS ══ -->
   <!-- modul harus load sebelum script.js -->
   <script src="js/manual-add.js"></script>
   <script src="js/schematic-import.js"></script>
+  <script src="js/edit-build.js"></script>
   <script src="script.js"></script>
 
 </body>
