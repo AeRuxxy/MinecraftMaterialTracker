@@ -833,3 +833,28 @@ footer span { color: var(--accent); }
   text-align: center;
 }
 .wip-note strong { color: var(--accent); }
+
+/* ══════════════════════════
+   GITHUB BUTTON
+══════════════════════════ */
+.btn-github {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .3rem .7rem;
+  border: var(--pixel) solid var(--border);
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-decoration: none;
+  font-family: inherit;
+  transition: border-color .15s, color .15s;
+}
+.btn-github:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn-github svg {
+  flex-shrink: 0;
+}
