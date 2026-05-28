@@ -1,10 +1,3 @@
-// ═══════════════════════════════════════════════════════════
-//  edit-build.js
-//  Modul untuk mengedit build yang sudah ada.
-//  Bergantung pada: builds[], save(), renderSidebar(),
-//                   renderMain(), activeId (dari script.js)
-// ═══════════════════════════════════════════════════════════
-
 const EditBuild = (() => {
 
   const modal     = () => document.getElementById('modalEditBuild');
