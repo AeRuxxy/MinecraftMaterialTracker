@@ -1,10 +1,3 @@
-// ═══════════════════════════════════════════════════════════
-//  manual-add.js
-//  Modul untuk menambahkan build baru secara manual.
-//  Bergantung pada: builds[], save(), renderSidebar(),
-//                   renderMain(), activeId (dari script.js)
-// ═══════════════════════════════════════════════════════════
-
 const ManualAdd = (() => {
 
   // ── Referensi elemen ──────────────────────────────────
@@ -173,8 +166,6 @@ const ManualAdd = (() => {
     btnCancel().onclick = close;
     btnClose().onclick  = close;
 
-    // Klik di luar modal TIDAK menutup — cegah kehilangan input tidak sengaja.
-    // Tutup hanya lewat tombol X atau Batal.
   }
 
   // ── Tutup modal ────────────────────────────────────────
