@@ -65,7 +65,7 @@ function handleImageUpload(buildId) {
     const file = input.files[0];
     if (!file) return;
 
-    // Resize & convert ke base64 via canvas supaya hemat localStorage
+    // Resize & convert ke base64 via canvas
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
@@ -289,7 +289,6 @@ function closeChooseModal() {
 btnAddBuild.addEventListener('click', openChooseModal);
 document.getElementById('modalChooseClose').addEventListener('click', closeChooseModal);
 
-// Klik overlay untuk tutup
 modalChoose.addEventListener('click', e => {
   if (e.target === modalChoose) closeChooseModal();
 });
