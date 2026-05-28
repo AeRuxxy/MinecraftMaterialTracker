@@ -1,10 +1,3 @@
-// ═══════════════════════════════════════════════════════════
-//  schematic-import.js
-//  STATUS: 🚧 ON PROGRESS — fitur ini masih dalam pengembangan
-//  Parser NBT masih memiliki bug pada beberapa format file.
-//  Untuk sementara, modal ini menampilkan notifikasi status.
-// ═══════════════════════════════════════════════════════════
-
 const SchematicImport = (() => {
 
   const modal     = () => document.getElementById('modalSchematic');
@@ -38,8 +31,6 @@ const SchematicImport = (() => {
     btnClose().onclick  = close;
     btnImport().onclick = null;
 
-    // Klik overlay TIDAK menutup (konsisten dengan manual-add)
-    // Hanya tombol X / Batal yang menutup
   }
 
   function close() {
