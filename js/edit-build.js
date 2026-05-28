@@ -182,7 +182,6 @@ const EditBuild = (() => {
     btnClose().onclick  = close;
     btnDelete().onclick = deleteBuild;
 
-    // Klik overlay TIDAK menutup modal (cegah kehilangan input tidak sengaja)
   }
 
   // ── Tutup modal ──────────────────────────────────────────
